@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/*
+  Time Skip — design tokens.
+  Warm, editorial, archival. Ivory paper, ink text, a single clay accent.
+*/
+
+:root {
+  /* Dark gallery: a warm near-black room where the photographs are the light. */
+  --paper: #0e0d0c;
+  --paper-raised: #181714;
+  --paper-sunk: #060605;
+  --ink: #f3f0e8;
+  --ink-soft: #b6b1a4;
+  --ink-faint: #79746a;
+  --line: #f3f0e814;
+  --line-strong: #f3f0e826;
+  --clay: #db7a52;
+  --clay-soft: #e79b78;
+  --shadow: 0 0 0;
+  --hairline: #f3f0e8;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-clay: var(--clay);
+  --color-clay-soft: var(--clay-soft);
+
+  --font-display: var(--font-newsreader);
+  --font-sans: var(--font-hanken);
+  --font-mono: var(--font-mono-geist);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+  /* The app owns a single 100dvh stage; only the grid scrolls, internally. */
+  overflow: hidden;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior: none;
+}
+
+/* Faint grain + a soft warm bloom so the dark ground reads as a lit room. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 80% at 50% 38%, #2a251f55 0%, transparent 60%);
+}
+
+::selection {
+  background: var(--clay);
+  color: #0e0d0c;
+}
+
+/* Keyboard focus only — never on mouse/touch — with a warm, on-brand ring. */
+:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--paper),
+    0 0 0 4px var(--clay);
+  border-radius: 8px;
+}
+
+/* Display numerals & small-caps style for metadata labels. */
+.u-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-feature-settings: "tnum";
+}
+
+.u-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* A photograph in a dark room: depth below, a faint light spilling around it. */
+.u-grain-card {
+  box-shadow:
+    0 0 0 1px #f3f0e814,
+    0 18px 40px -18px #000000cc,
+    0 0 60px -14px #e7c9a83d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Thin, unobtrusive scrollbars in the grid view. */
+.u-scroll::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+.u-scroll::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+  border: 2px solid var(--paper);
+}
